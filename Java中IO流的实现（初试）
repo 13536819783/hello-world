@@ -1,0 +1,29 @@
+package cn.java;
+
+import java.io.*;
+
+//------------------------------综合练习（拷贝视频）---------------------------------
+public class LianXi {
+    public static void main(String[] args) throws IOException {
+        /**
+         * 在此处对BufferedInputStream和BufferedOutputStream的调用是为了加快传输的速度
+         * 只有调用了FileInputStream和FileOutputStream的前提下才能调用BufferedInputStream和BufferedOutputStream
+         */
+        FileInputStream fis=new FileInputStream("D:\\java0.mp4");
+        BufferedInputStream bis=new BufferedInputStream(fis);
+        FileOutputStream fos=new FileOutputStream("D:\\java3.mp4");
+        BufferedOutputStream bos=new BufferedOutputStream(fos);
+        //byte[] car=new byte[1024];//采用此法可加快速度，但在尝试中经常出错（文件无法打开，文件过大），待之后解答
+        int len=0;
+        while((len=bis.read())!=-1) {
+            bos.write(len);
+            //bos.write(car,0,len);//对应上方byte[] car=new byte[1024];
+        }
+        //关闭输入流(先脱外套，再脱短袖)
+        bis.close();//脱外套
+        fis.close();//脱短袖
+        //关闭输出流(同上)
+        bos.close();
+        fos.close();
+    }
+}
