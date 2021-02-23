@@ -1,0 +1,132 @@
+package cn.java;
+
+import org.junit.Test;
+
+import java.io.*;
+import java.util.Scanner;
+
+public class IOTest {
+    /**
+     * 将程序代码中的数据写入文件中（字节输出流）
+     */
+    @Test
+    public void writeToFile() throws IOException {
+        /**
+         * 该处似乎无法进行Scanner的应用，故将Scanner的应用转接到psvm
+         */
+        //将文件封装为File对象
+        File file=new File("D:\\java0.txt");
+        boolean flag1=file.createNewFile();
+        System.out.println("file.createNewFile()="+flag1);
+        //1.铺管道
+        String str="hello";//此处使用\r\n可换行
+        FileOutputStream fos=new FileOutputStream(file,true);//true的作用是让新增的字符增加在原字符后面，而不是进行覆盖
+        //此处有异常FileNotFoundException，表示无法找到磁盘,须抛出
+        //2.打开水龙头，将Java中的数据保存到磁盘中去
+        fos.write(str.getBytes());//此处也有异常
+        //3,关闭水龙头
+        fos.close();
+    }
+
+    /**
+     * 将磁盘中保存的数据读取到Java代码中（字节输入流）
+     */
+    @Test
+    public void readToJava() throws IOException{
+        //将文件封装为File对象
+        File file=new File("D:\\java0.txt");
+        //1.建立磁盘通往程序代码的管道
+        FileInputStream fis=new FileInputStream(file);
+        //打开水龙头，读取数据
+        int len=0;
+        while((len=fis.read())!=-1) {
+            System.out.print((char)len);//读取到中文是会产生乱码
+        }
+        //3.关闭水龙头
+        fis.close();
+    }
+
+    public static void main(String[] args) throws IOException{
+        Scanner console=new Scanner(System.in);
+        //将文件封装为File对象
+        File file=new File("D:\\java0.txt");
+        boolean flag1=file.createNewFile();
+        System.out.println("file.createNewFile()="+flag1);
+        //1.铺管道
+        System.out.print("请输入数据：");
+        String str=console.next();//此处使用\r\n可换行
+        FileOutputStream fos=new FileOutputStream(file,true);//true的作用是让新增的字符增加在原字符后面，而不是进行覆盖
+        //此处有异常FileNotFoundException，表示无法找到磁盘,须抛出
+        //2.打开水龙头，将Java中的数据保存到磁盘中去
+        fos.write(str.getBytes());//此处也有异常
+        //3,关闭水龙头
+        fos.close();
+    }
+    //----------------------------------------字符流---------------------------------------------
+    /**
+     * 字符输入流
+     */
+    @Test
+    public void readFile() throws Exception{
+        //1.建立字符输入流
+        FileReader reader=new FileReader("D:\\Student.java");
+        //2.打开流
+        char[] car=new char[1024];//一次运一车
+        int len=0;
+        while((len=reader.read(car))!=-1){//-1时读取结束
+            System.out.println(new String(car,0,len));
+        }
+        //3.关闭流
+        reader.close();
+    }
+    @Test
+    public void read2File() throws Exception{
+        //1.建立字符输入流
+        FileReader reader=new FileReader("D:\\Student.java");
+        BufferedReader bufferedReader=new BufferedReader(reader);
+        //2.打开流
+        String line=null;
+        while ((line=bufferedReader.readLine())!=null){//null时读取结束
+            System.out.println(line);
+        }
+        //3.关闭流
+        bufferedReader.close();
+        reader.close();
+    }
+
+    /**
+     * 通过字符输出流将数据保存到文件中
+     */
+    @Test
+    public void writeFile() throws Exception{
+        FileWriter fileWriter=new FileWriter("D:\\dt60.java",true);
+        fileWriter.write("java：从入门到入土");
+        fileWriter.write("数据库：从删库到跑路");
+        fileWriter.close();
+
+    }
+    @Test
+    public void write2File() throws Exception{
+        FileWriter fileWriter=new FileWriter("D:\\dt60.java",true);
+        BufferedWriter bufferedWriter=new BufferedWriter(fileWriter);
+        bufferedWriter.write(" 你好");
+        bufferedWriter.newLine();//通用换行
+        bufferedWriter.write("spring春天到了");
+        bufferedWriter.close();
+        fileWriter.close();
+
+    }
+    //-------------------------处理字节流中文乱码问题-----------------------------
+    @Test
+    public void luanma() throws Exception{//GBK,gb2312,utf-8,遇到不同情况，需进行不同的标识
+        FileOutputStream fileOutputStream=new FileOutputStream("D:\\dt60.txt",true);
+        //BufferedOutputStream bufferedOutputStream=new BufferedOutputStream(fileOutputStream);
+        OutputStreamWriter outputStreamWriter=new OutputStreamWriter(fileOutputStream,"UTF-8");
+        //fileOutputStream.write("hello 中国美国日本韩国".getBytes());
+        //bufferedOutputStream.close();
+        outputStreamWriter.write("中国美国日本");
+        outputStreamWriter.close();
+        fileOutputStream.close();
+    }
+
+}
