@@ -1,0 +1,119 @@
+package com.java;
+
+import org.junit.Test;
+
+import java.io.*;
+
+public class IoTest {
+    /**
+     * 将某一个对象保存到文件中
+     * @throws IOException
+     */
+    @Test
+    public void objectToFile() throws IOException {
+        //1.创建一个对象输出流
+        FileOutputStream fos=new FileOutputStream("D:\\java.txt");
+        //BufferedOutputStream bos=new BufferedOutputStream(fos);
+        ObjectOutputStream oos=new ObjectOutputStream(fos);
+        Student student1=new Student("911","桦","男",180.5,74.3);
+        //2.将对象写出
+        oos.writeObject(student1);
+        //3.关闭流
+        oos.close();
+        fos.close();
+    }
+
+    /**
+     * 从文件中读取对象
+     * @throws IOException
+     */
+    @Test
+    public void readToFile() throws Exception {
+        //1.创建一个对象输入流
+       FileInputStream fis=new FileInputStream("D:\\java.txt");
+       //BufferedInputStream bos=new BufferedInputStream(fis);
+       ObjectInputStream ois=new ObjectInputStream(fis);
+        Student student=(Student)ois.readObject();
+        System.out.println(student);
+        ois.close();
+        fis.close();
+    }
+}
+
+
+
+
+package com.java;
+
+import java.io.Serializable;
+
+public class Student implements Serializable {//标记性接口
+    private static final long serialVersionUID = -7205525686672945066L;
+    private String stuNo;//学号
+    private String stuName;//姓名
+    private String gender;//性别
+    private Double height;//身高
+    private Double weight;//体重
+
+    public Student(String stuNo, String stuName, String gender, Double height, Double weight) {
+        this.stuNo = stuNo;
+        this.stuName = stuName;
+        this.gender = gender;
+        this.height = height;
+        this.weight = weight;
+    }
+    public Student(){
+
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "stuNo='" + stuNo + '\'' +
+                ", stuName='" + stuName + '\'' +
+                ", gender='" + gender + '\'' +
+                ", height=" + height +
+                ", weight=" + weight +
+                '}';
+    }
+
+    public String getStuNo() {
+        return stuNo;
+    }
+
+    public void setStuNo(String stuNo) {
+        this.stuNo = stuNo;
+    }
+
+    public String getStuName() {
+        return stuName;
+    }
+
+    public void setStuName(String stuName) {
+        this.stuName = stuName;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Double getHeight() {
+        return height;
+    }
+
+    public void setHeight(Double height) {
+        this.height = height;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+}
