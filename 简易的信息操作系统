@@ -1,0 +1,125 @@
+package com;
+
+public class Person {
+    public String name;
+    public String idCard;
+    public int gender;
+    public String address;
+    public Person(String name,String idCard,int gender,String address){
+        this.name=name;
+        this.idCard=idCard;
+        this.gender=gender;
+        this.address=address;
+    }
+}
+
+
+
+
+package com;
+
+import java.time.temporal.Temporal;
+import java.util.*;
+
+public class Tset {
+    HashMap<String,Person> hashMap;
+    Scanner console;
+    public Tset(){
+        hashMap=new HashMap<>();
+        console=new Scanner(System.in);
+    }
+
+    /**
+     * 1.信息录入
+     */
+    public void testAdd(){
+        System.out.println("开始录入公民信息");
+        System.out.print("1.请输入姓名：");
+        String name = console.next();
+        System.out.print("2.请输入身份证号：");
+        String idCard = console.next();
+        System.out.print("3.请输入性别（1代表男，2代表女）：");
+        int gender = console.nextInt();
+        System.out.print("4.输入家庭住址：");
+        String address = console.next();
+        Person person = new Person(name, idCard, gender, address);
+        hashMap.put(idCard, person);
+        System.out.println("录入成功");
+    }
+
+    /**
+     * 信息查询
+     */
+    public void testFind(){
+        System.out.println("所有人信息列表如下：");
+        Set<Map.Entry<String,Person>> entrySet=hashMap.entrySet();
+        for (Map.Entry<String,Person> map:entrySet){
+            System.out.print(map.getValue().name+" ");
+            System.out.print(map.getKey()+" ");
+            System.out.print(map.getValue().gender+" ");
+            System.out.println(map.getValue().address);
+        }
+    }
+
+    /**
+     * 3.信息修改
+     */
+    public void testCorrect(){
+        System.out.println("开始信息修改：");
+        System.out.print("请输入被修改人身份证号：");
+        String idCard=console.next();
+        System.out.print("请输入新的姓名：");
+        String name=console.next();
+        System.out.print("请输入新的性别（1代表男，2代表女）：");
+        int gender=console.nextInt();
+        System.out.print("4.输入新的家庭住址：");
+        String address=console.next();
+        Person person=new Person(name,idCard,gender,address);
+        hashMap.put(idCard,person);
+        System.out.println("修改成功");
+
+    }
+
+    /**
+     * 4.信息删除
+     */
+    public void testRemove(){
+        System.out.println("开始信息删除");
+        System.out.print("请输入被删除人身份证号：");
+        String idCard=console.next();
+        hashMap.remove(idCard);
+        System.out.println("删除成功");
+    }
+
+    public static void main(String[] args) {
+        Tset test=new Tset();
+        while(true){
+            System.out.println("-------信息查询系统-------");
+            System.out.println("1.信息录入");
+            System.out.println("2.信息查询");
+            System.out.println("3.信息修改");
+            System.out.println("4.信息删除");
+            System.out.println("5.退出");
+            System.out.print("请选择：");
+            Scanner console=new Scanner(System.in);
+            int i=console.nextInt();
+            switch (i){
+                case 1:
+                    test.testAdd();break;
+                case 2:
+                    test.testFind();break;
+                case 3:
+                    test.testCorrect();break;
+                case 4:
+                    test.testRemove();break;
+                case 5:
+                    System.out.println("退出成功");
+                    System.exit(0);//等同于结束程序
+                    break;
+                default:
+                    System.out.println("输入了错误的选项，请重新输入");
+            }
+
+        }
+    }
+}
