@@ -1,0 +1,31 @@
+package com.imooc;
+
+public class MyException extends Exception{
+    public  MyException(String message){
+        super(message);
+    }
+    public MyException(){
+
+    }
+}
+
+
+package com.imooc;
+
+public class A {
+    public static void avg(int age) throws MyException{
+        if(age<0){
+            throw new MyException("年龄不可以是负数");
+        }else{
+            System.out.println("x小王的年龄是："+age);
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            avg(-1);
+        }catch (MyException e){
+            e.printStackTrace();
+        }
+    }
+}
