@@ -1,0 +1,84 @@
+//这是一个不完整的系统，在更深入的学习后会对细节的打磨
+package 火车售票系统;
+
+public class TicketWindow {
+    public static void main(String[] args) {
+        /**
+         * 设立4个窗口，进行多线程操作并测试线程安全问题
+         */
+        //第一个窗口
+        TicketSystem ticketSystem1=new TicketSystem();
+        Thread thread1=new Thread(ticketSystem1);
+        //第二个窗口
+        TicketSystem ticketSystem2=new TicketSystem();
+        Thread thread2=new Thread(ticketSystem2);
+        //第三个窗口
+        TicketSystem ticketSystem3=new TicketSystem();
+        Thread thread3=new Thread(ticketSystem3);
+        //第四个窗口
+        TicketSystem ticketSystem4=new TicketSystem();
+        Thread thread4=new Thread(ticketSystem4);
+        //购票
+        thread1.start();
+        thread2.start();
+        thread3.start();
+        thread4.start();
+
+    }
+
+}
+
+
+
+package 火车售票系统;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+public class TicketSystem implements Runnable{
+    //武汉---->北京:200张火车票
+    private static int ticketNum=200;//静态变量数据共用
+    int ticket1=0,ticket2=0,ticket3=0,ticket4=0;
+    int j=0;
+    @Override
+    public void run() {
+        //随机定义不同地区
+        ArrayList<String> hashSet=new ArrayList<>();
+        hashSet.add("北京");
+        hashSet.add("上海");
+        hashSet.add("深圳");
+        hashSet.add("广州");
+        Random random=new Random();
+        //这是一个2000人的窗口
+        try {
+            for (int i=1;i<2000;i++){
+                synchronized (TicketSystem.class){//为线程上锁，保证每个线程完整执行后后再执行下一个
+                    int lucky=random.nextInt(4);
+                    if(ticketNum>0){
+                        ticketNum--;
+                        System.out.println("恭喜来自"+hashSet.get(lucky)+"的你，抢票成功----------还剩"+ticketNum+"张票");
+                        Thread.sleep(10);//买一张票用时10ms
+                        switch (lucky){
+                            case 0:
+                                ticket1++;break;
+                            case 1:
+                                ticket2++;break;
+                            case 2:
+                                ticket3++;break;
+                            case 3:
+                                ticket4++;break;
+                        }
+                    }
+                }
+            }
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        j++;
+        System.out.println(j);
+        System.out.println("来自的北京朋友一共抢了"+ticket1+"票");
+        System.out.println("来自的上海朋友一共抢了"+ticket2+"票");
+        System.out.println("来自的深圳朋友一共抢了"+ticket3+"票");
+        System.out.println("来自的广州朋友一共抢了"+ticket4+"票");
+    }
+}
